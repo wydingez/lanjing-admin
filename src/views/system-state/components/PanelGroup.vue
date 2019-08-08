@@ -6,7 +6,7 @@
     <el-col
       :xs="12"
       :sm="12"
-      :lg="4"
+      :lg="8"
       class="card-panel-col"
     >
       <div
@@ -34,7 +34,7 @@
     <el-col
       :xs="12"
       :sm="12"
-      :lg="4"
+      :lg="8"
       class="card-panel-col"
     >
       <div
@@ -62,7 +62,7 @@
     <el-col
       :xs="12"
       :sm="12"
-      :lg="4"
+      :lg="8"
       class="card-panel-col"
     >
       <div
@@ -90,7 +90,7 @@
     <el-col
       :xs="12"
       :sm="12"
-      :lg="4"
+      :lg="8"
       class="card-panel-col"
     >
       <div
@@ -120,7 +120,7 @@
     <el-col
       :xs="12"
       :sm="12"
-      :lg="4"
+      :lg="8"
       class="card-panel-col"
     >
       <div
@@ -149,7 +149,7 @@
     <el-col
       :xs="12"
       :sm="12"
-      :lg="4"
+      :lg="8"
       class="card-panel-col"
     >
       <div

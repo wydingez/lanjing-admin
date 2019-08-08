@@ -64,7 +64,7 @@ export default new Router({
           component: () => import('@/views/parameter-setting/index.vue'),
           meta: {
             title: '参数设定',
-            icon: 'tree'
+            icon: 'param-setting'
           }
         }
       ]
@@ -78,7 +78,7 @@ export default new Router({
           component: () => import('@/views/realname-audit/index.vue'),
           meta: {
             title: '实名审核',
-            icon: 'tree'
+            icon: 'realname-audit'
           }
         }
       ]
@@ -92,7 +92,7 @@ export default new Router({
           component: () => import('@/views/presentation-audit/index.vue'),
           meta: {
             title: '提现审核',
-            icon: 'money'
+            icon: 'cash-audit'
           }
         }
       ]
@@ -120,7 +120,7 @@ export default new Router({
           component: () => import('@/views/system-mass-distribution/index.vue'),
           meta: {
             title: '系统群发',
-            icon: 'tree'
+            icon: 'send-many'
           }
         }
       ]
@@ -134,7 +134,7 @@ export default new Router({
           component: () => import('@/views/system-setting/index.vue'),
           meta: {
             title: '系统设置',
-            icon: 'tree'
+            icon: 'system-setting'
           }
         }
       ]
