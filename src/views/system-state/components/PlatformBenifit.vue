@@ -1,18 +1,20 @@
 <template>
   <div class="platform-benifit">
-    <el-divider class="platform-benifit-split">平台利润收益</el-divider>
+    <el-divider class="platform-benifit-split">
+      平台利润收益
+    </el-divider>
     <div class="filter-container">
       <el-date-picker
-        class="filter-item-date"
         v-model="rangeDate"
+        class="filter-item-date"
         type="daterange"
         align="right"
         unlink-panels
         range-separator="至"
         start-placeholder="开始日期"
         end-placeholder="结束日期"
-        :picker-options="rangeDateOptions">
-      </el-date-picker>
+        :picker-options="rangeDateOptions"
+      />
       <el-button
         v-waves
         class="filter-item"
@@ -34,22 +36,31 @@
       <div class="filter-tip">
         <span class="filter-tip-left">
           所选时间段平台累计收益：
-          <el-tag type="success" effect="dark">￥1000</el-tag>
+          <el-tag
+            type="success"
+            effect="dark"
+          >￥ {{ totalProfit }}</el-tag>
         </span>
         <span class="filter-tip-right">
           平台累计收益：
-          <el-tag type="success" effect="dark">￥1000</el-tag>
+          <el-tag
+            type="success"
+            effect="dark"
+          >￥ {{ periodProfit }}</el-tag>
         </span>
       </div>
     </div>
-  
-    <table-pagenation :ajax="ajax" ref="tp">
+
+    <table-pagenation
+      ref="tp"
+      :ajax="ajax"
+    >
       <el-table-column
         label="日期"
         align="center"
       >
         <template slot-scope="scope">
-          <span>{{ scope.row.timestamp | parseTime('{y}-{m}-{d}') }}</span>
+          <span>{{ scope.row.statisticsDate }}</span>
         </template>
       </el-table-column>
       <el-table-column
@@ -57,16 +68,25 @@
         align="center"
       >
         <template slot-scope="scope">
-          <span style="color:red;">{{ scope.row.pageviews }}</span>
+          <span style="color:red;">{{ scope.row.income }}</span>
         </template>
       </el-table-column>
-    </table-pagenation>  
+    </table-pagenation>
   </div>
 </template>
 
 <script lang="ts">
 import { Component, Vue } from 'vue-property-decorator'
 import TablePagenation from '@/components/TablePagination/index.vue'
+import { parseTime } from '@/utils/index'
+import { getSysTotalProfit, getSysPeriodProfit } from '@/api/sys-status'
+
+function getLastMonth() {
+  const end = new Date()
+  const start = new Date()
+  start.setTime(start.getTime() - 3600 * 1000 * 24 * 30)
+  return [start, end]
+}
 
 @Component({
   name: 'ComplexTable',
@@ -75,51 +95,70 @@ import TablePagenation from '@/components/TablePagination/index.vue'
   }
 })
 export default class extends Vue {
-  private rangeDate = ''
+  private rangeDate: any[] = getLastMonth()
+  private totalProfit: number = 0
+  private periodProfit: number = 0
+
   private rangeDateOptions = {
     shortcuts: [{
       text: '最近一周',
       onClick(picker:Vue) {
-        const end = new Date();
-        const start = new Date();
-        start.setTime(start.getTime() - 3600 * 1000 * 24 * 7);
-        picker.$emit('pick', [start, end]);
+        const end = new Date()
+        const start = new Date()
+        start.setTime(start.getTime() - 3600 * 1000 * 24 * 7)
+        picker.$emit('pick', [start, end])
       }
     }, {
       text: '最近一个月',
       onClick(picker:Vue) {
-        const end = new Date();
-        const start = new Date();
-        start.setTime(start.getTime() - 3600 * 1000 * 24 * 30);
-        picker.$emit('pick', [start, end]);
+        const end = new Date()
+        const start = new Date()
+        start.setTime(start.getTime() - 3600 * 1000 * 24 * 30)
+        picker.$emit('pick', [start, end])
       }
     }, {
       text: '最近三个月',
       onClick(picker:Vue) {
-        const end = new Date();
-        const start = new Date();
-        start.setTime(start.getTime() - 3600 * 1000 * 24 * 90);
-        picker.$emit('pick', [start, end]);
+        const end = new Date()
+        const start = new Date()
+        start.setTime(start.getTime() - 3600 * 1000 * 24 * 90)
+        picker.$emit('pick', [start, end])
       }
     }]
   }
 
-  private get ajax () {
+  private get ajax() {
     return {
-      url: '/xxxx',
+      url: '/sys-status/query/profit',
       params: {
-        rangeDate: this.rangeDate
+        startDate: parseTime(this.rangeDate[0]),
+        endDate: parseTime(this.rangeDate[1])
       }
     }
   }
 
-  private doSearch () {
+  private doSearch() {
+    this.getTPProfit();
     (this.$refs.tp as TablePagenation).doSearch()
   }
 
   private doClear() {
-    this.rangeDate = ''
+    this.rangeDate = []
     this.doSearch()
+  }
+
+  private async getTPProfit() {
+    const res2 = await getSysPeriodProfit({
+      startDate: parseTime(this.rangeDate[0]),
+      endDate: parseTime(this.rangeDate[1])
+    })
+    this.periodProfit = res2.data
+    const res1 = await getSysTotalProfit()
+    this.totalProfit = res1.data
+  }
+
+  async created() {
+    this.getTPProfit()
   }
 }
 </script>
@@ -151,4 +190,3 @@ export default class extends Vue {
   }
 }
 </style>
-

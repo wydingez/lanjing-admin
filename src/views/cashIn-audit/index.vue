@@ -1,6 +1,6 @@
 <template>
   <div class="app-container presentation-audit">
-    <h3>提现审核队列</h3>
+    <h3>充值审核队列</h3>
     <span class="tip">(最早申请实名的越靠前， 先审核)</span>
     <table-pagination
       ref="tp"
@@ -17,27 +17,27 @@
         </template>
       </el-table-column>
       <el-table-column
-        label="审核用户"
+        label="充值账号"
         align="center"
       >
         <template slot-scope="scope">
-          <span>{{ scope.row.auditUser }}</span>
+          <span>{{ scope.row.bindAcct }}</span>
         </template>
       </el-table-column>
       <el-table-column
-        label="¥ 提现金额"
+        label="¥ 充值金额"
         align="center"
       >
         <template slot-scope="scope">
-          <span>{{ scope.row.withdrawAmount }}</span>
+          <span>{{ scope.row.rechargeAmount }}</span>
         </template>
       </el-table-column>
       <el-table-column
-        label="提现时间"
+        label="充值时间"
         align="center"
       >
         <template slot-scope="scope">
-          <span>{{ scope.row.withdrawDate }}</span>
+          <span>{{ scope.row.rechargeDate }}</span>
         </template>
       </el-table-column>
       <el-table-column
@@ -82,7 +82,7 @@
     </table-pagination>
 
     <el-dialog
-      title="提现审核"
+      :title="auditItem.isView ? '查看' : '充值审核'"
       :visible.sync="dialog"
       width="500px"
       top="50px"
@@ -103,15 +103,15 @@
         </li>
         <li>
           <span class="label">提现金额：</span>
-          <span class="content">￥ {{ auditItem.withdrawAmount }}</span>
+          <span class="content">￥ {{ auditItem.rechargeAmount }}</span>
         </li>
         <li>
           <span class="label">提现时间：</span>
-          <span class="content">{{ auditItem.withdrawDate }}</span>
+          <span class="content">{{ auditItem.rechargeDate }}</span>
         </li>
         <li>
           <span class="label">提现备注：</span>
-          <span class="content">{{ auditItem.withdrawDesc }}</span>
+          <span class="content">{{ auditItem.rechargeDesc }}</span>
         </li>
         <li>
           <span class="label">审核意见：</span>
@@ -144,7 +144,7 @@
 <script lang="ts">
 import { Vue, Component } from 'vue-property-decorator'
 import TablePagination from '@/components/TablePagination/index.vue'
-import { doAuditWithdrawApprove, doAuditWithdrawReject } from '@/api/audit'
+import { doAuditRechargeApprove, doAuditRechargeReject } from '@/api/audit'
 
 @Component({
   name: 'presentation-audit',
@@ -157,13 +157,14 @@ export default class extends Vue {
   private dialog:boolean = false
   private auditDesc : string = ''
   private auditItem = {
-    auditUser: '',
-    status: '',
     streamNo: '',
+    bindAcct: '',
+    rechargeAmount: '',
+    rechargeDate: '',
+    status: '',
+    rechargeDesc: '',
+    auditUser: '',
     recordNo: '',
-    withdrawAmount: '',
-    withdrawDate: '',
-    withdrawDesc: '',
     isView: false
   }
 
@@ -173,11 +174,12 @@ export default class extends Vue {
     this.auditItem.auditUser = row.auditUser
     this.auditItem.status = row.status
     this.auditItem.streamNo = row.streamNo
-    this.auditItem.recordNo = row.recordNo
-    this.auditItem.withdrawDate = row.withdrawDate
+    this.auditItem.bindAcct = row.bindAcct
+    this.auditItem.rechargeAmount = row.rechargeAmount
     this.auditItem.isView = !!isView
-    this.auditItem.withdrawAmount = row.withdrawAmount
-    this.auditItem.withdrawDesc = row.withdrawDesc
+    this.auditItem.rechargeDate = row.rechargeDate
+    this.auditItem.rechargeDesc = row.withdrawDesc
+    this.auditItem.recordNo = row.recordNo
     if (isView) {
       this.auditDesc = row.auditDesc
     }
@@ -185,7 +187,7 @@ export default class extends Vue {
 
   private get ajax() {
     return {
-      url: '/audit/withdraw-list'
+      url: '/audit/recharge-list'
     }
   }
 
@@ -222,12 +224,12 @@ export default class extends Vue {
   }
 
   private async approve() {
-    await doAuditWithdrawApprove(this.auditItem.streamNo)
+    await doAuditRechargeApprove(this.auditItem.streamNo)
     this.dialog = false
     this.$message.success('操作成功')
   }
   private async reject() {
-    await doAuditWithdrawReject({
+    await doAuditRechargeReject({
       recordNo: this.auditItem.recordNo,
       auditDesc: this.auditDesc
     })

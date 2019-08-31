@@ -1011,6 +1011,11 @@
   dependencies:
     "@types/jest-diff" "*"
 
+"@types/js-base64@^2.3.1":
+  version "2.3.1"
+  resolved "https://registry.npm.taobao.org/@types/js-base64/download/@types/js-base64-2.3.1.tgz#c39f14f129408a3d96a1105a650d8b2b6eeb4168"
+  integrity sha1-w58U8SlAij2WoRBaZQ2LK27rQWg=
+
 "@types/js-cookie@^2.2.2":
   version "2.2.2"
   resolved "https://registry.npm.taobao.org/@types/js-cookie/download/@types/js-cookie-2.2.2.tgz#84e8848e14d44418726ceb52dd887c7bfe45d678"
@@ -7221,6 +7226,11 @@ jest@^24.8.0:
   dependencies:
     import-local "^2.0.0"
     jest-cli "^24.8.0"
+
+js-base64@^2.5.1:
+  version "2.5.1"
+  resolved "https://registry.npm.taobao.org/js-base64/download/js-base64-2.5.1.tgz#1efa39ef2c5f7980bb1784ade4a8af2de3291121"
+  integrity sha1-Hvo57yxfeYC7F4St5KivLeMpESE=
 
 js-beautify@^1.6.12, js-beautify@^1.6.14:
   version "1.10.0"

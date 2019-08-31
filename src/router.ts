@@ -98,6 +98,20 @@ export default new Router({
       ]
     },
     {
+      path: '/cashIn-audit',
+      component: Layout,
+      children: [
+        {
+          path: '',
+          component: () => import('@/views/cashIn-audit/index.vue'),
+          meta: {
+            title: '充值审核',
+            icon: 'cash-audit'
+          }
+        }
+      ]
+    },
+    {
       path: '/user-management',
       component: Layout,
       children: [

@@ -2,7 +2,11 @@
   <div class="app-container user-management">
     <h3>用户列表</h3>
     <div class="filter-condition">
-      <el-input placeholder="请输入内容检索" style="width: 200px" class="filter-item-input"></el-input>
+      <el-input
+        placeholder="请输入内容检索"
+        style="width: 200px"
+        class="filter-item-input"
+      />
       <el-button
         v-waves
         class="filter-item"
@@ -57,7 +61,8 @@
           <el-button
             type="primary"
             size="mini"
-            @click="manage">
+            @click="manage"
+          >
             管理
           </el-button>
         </template>
@@ -70,9 +75,14 @@
       :visible.sync="dialog"
       width="500px"
       top="50px"
-      center>
+      center
+    >
       <div class="header">
-        <el-avatar class="img" size="large" src="https://cube.elemecdn.com/0/88/03b0d39583f48206768a7534e55bcpng.png"></el-avatar>
+        <el-avatar
+          class="img"
+          size="large"
+          src="https://cube.elemecdn.com/0/88/03b0d39583f48206768a7534e55bcpng.png"
+        />
         <div class="desc">
           <span>昵称：张三</span><br>
           <span>UID：1</span>
@@ -87,7 +97,7 @@
           <span class="label">安全邮箱：</span>
           <span class="content">13813813813@163.com</span>
         </li>
-        <el-divider></el-divider>
+        <el-divider />
         <li>
           <span class="label">资金密码：</span>
           <span class="content">*******</span>
@@ -96,7 +106,7 @@
           <span class="label">实名认证：</span>
           <span class="content">张三，420***********3759</span>
         </li>
-        <el-divider></el-divider>
+        <el-divider />
         <li>
           <span class="label">现金余额：</span>
           <span class="content">￥ 1000</span>
@@ -109,32 +119,32 @@
           <span class="label">银行卡：</span>
           <span class="content">62****324</span>
         </li>
-        <el-divider></el-divider>
+        <el-divider />
         <li>
           <span class="label">接收账户变动提醒：</span>
           <span class="content">
             <el-switch
-              v-model="accountChange">
-            </el-switch>
-            {{accountChange ? 'ON' : 'OFF'}}
+              v-model="accountChange"
+            />
+            {{ accountChange ? 'ON' : 'OFF' }}
           </span>
         </li>
         <li>
           <span class="label">接收最新挂单通知：</span>
           <span class="content">
             <el-switch
-              v-model="billChange">
-            </el-switch>
-            {{billChange ? 'ON' : 'OFF'}}
+              v-model="billChange"
+            />
+            {{ billChange ? 'ON' : 'OFF' }}
           </span>
         </li>
         <li>
           <span class="label">接收交易信息通知：</span>
           <span class="content">
             <el-switch
-              v-model="dealChange">
-            </el-switch>
-            {{dealChange ? 'ON' : 'OFF'}}
+              v-model="dealChange"
+            />
+            {{ dealChange ? 'ON' : 'OFF' }}
           </span>
         </li>
       </ul>
@@ -153,7 +163,7 @@ import TablePagination from '@/components/TablePagination/index.vue'
   }
 })
 export default class extends Vue {
-  private dialog:boolean =  false
+  private dialog:boolean = false
   private accountChange:boolean = false
   private billChange:boolean = false
   private dealChange:boolean = false

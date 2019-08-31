@@ -24,7 +24,7 @@
           </div>
           <count-to
             :start-val="0"
-            :end-val="102400"
+            :end-val="balanceData.memberNum"
             :duration="2600"
             class="card-panel-num"
           />
@@ -52,7 +52,7 @@
           </div>
           <count-to
             :start-val="0"
-            :end-val="81212"
+            :end-val="balanceData.visitCounts"
             :duration="3000"
             class="card-panel-num"
           />
@@ -80,8 +80,9 @@
           </div>
           <count-to
             :start-val="0"
-            :end-val="9280"
+            :end-val="balanceData.transSum"
             :duration="3200"
+            :decimals="2"
             class="card-panel-num"
           />
         </div>
@@ -108,7 +109,7 @@
           </div>
           <count-to
             :start-val="0"
-            :end-val="13600"
+            :end-val="balanceData.transNum"
             :duration="3600"
             class="card-panel-num"
           />
@@ -138,7 +139,7 @@
           </div>
           <count-to
             :start-val="0"
-            :end-val="13600"
+            :end-val="balanceData.agencyNum"
             :duration="3600"
             class="card-panel-num"
           />
@@ -167,8 +168,9 @@
           </div>
           <count-to
             :start-val="0"
-            :end-val="13600"
+            :end-val="balanceData.agencySum"
             :duration="3600"
+            :decimals="2"
             class="card-panel-num"
           />
         </div>
@@ -180,6 +182,17 @@
 <script lang="ts">
 import { Component, Prop, Vue } from 'vue-property-decorator'
 import CountTo from 'vue-count-to'
+import { getSysBalance } from '@/api/sys-status'
+
+interface BalanceData {
+  agencyNum: number,
+  agencySum: string | number,
+  memberNum: number,
+  onlineCounts: number,
+  transNum: number,
+  transSum: string | number,
+  visitCounts: number,
+}
 
 @Component({
   name: 'PanelGroup',
@@ -188,8 +201,25 @@ import CountTo from 'vue-count-to'
   }
 })
 export default class extends Vue {
+  private balanceData: BalanceData = {
+    agencyNum: 0,
+    agencySum: 0,
+    memberNum: 0,
+    onlineCounts: 0,
+    transNum: 0,
+    transSum: 0,
+    visitCounts: 0
+  }
+
   private handleSetLineChartData(type: string) {
     this.$emit('handleSetLineChartData', type)
+  }
+
+  async created() {
+    const { data } = await getSysBalance()
+    data.agencySum = Number(data.agencySum)
+    data.transSum = Number(data.transSum)
+    this.balanceData = data
   }
 }
 </script>

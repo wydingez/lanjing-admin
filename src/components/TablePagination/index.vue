@@ -9,14 +9,14 @@
       highlight-current-row
       style="width: 100%;"
     >
-      <slot></slot>
+      <slot />
     </el-table>
 
     <pagination
-      class="pagination"
       v-show="total>0"
+      class="pagination"
       :total="total"
-      :page.sync="listQuery.page"
+      :page.sync="listQuery.pageNum"
       :limit.sync="listQuery.limit"
       @pagination="getList"
     />
@@ -24,49 +24,61 @@
 </template>
 
 <script lang="ts">
-  import { Component, Prop, Vue } from 'vue-property-decorator'
-  import Pagination from '@/components/Pagination/index.vue'
-  import { getArticles } from '@/api/articles'
-  import { IArticleData } from '@/api/types'
+import { Component, Prop, Vue, Watch } from 'vue-property-decorator'
+import Pagination from '@/components/Pagination/index.vue'
+import { IArticleData } from '@/api/types'
+import request from '@/utils/request'
 
-  @Component({
-    name: 'table-pagination',
-    components: {
-      Pagination
-    }
-  })
-  export default class extends Vue {
-    @Prop({ default: () => {} }) private ajax!: object
+interface ajax {
+  url: string,
+  params: object
+}
 
-    private tableKey = 0
-    private list: IArticleData[] = []
-    private total = 0
-    private listLoading = true
-    private listQuery = {
-      page: 1,
-      limit: 20
-    }
-
-    created() {
-      this.getList()
-    }
-
-    private async getList() {
-      this.listLoading = true
-      const { data } = await getArticles(this.listQuery)
-      this.list = data.items
-      this.total = data.total
-      // Just to simulate the time of the request
-      setTimeout(() => {
-        this.listLoading = false
-      }, 0.5 * 1000)
-    }
-
-    public doSearch() {
-      this.listQuery.page = 1
-      this.getList()
-    }
+@Component({
+  name: 'table-pagination',
+  components: {
+    Pagination
   }
+})
+export default class extends Vue {
+  @Prop({ default: () => {} }) private ajax!: ajax
+  @Prop({ default: 1 }) private page!: number
+
+  private tableKey = 0
+  private list: IArticleData[] = []
+  private total = 0
+  private listLoading = true
+  private listQuery = {
+    pageNum: 1,
+    pageSize: 20
+  }
+
+  created() {
+    this.getList()
+  }
+
+  private async getList() {
+    this.listLoading = true
+    const { data } = await request({
+      url: this.ajax.url,
+      method: 'post',
+      data: Object.assign({}, this.listQuery, this.ajax.params || {})
+    })
+    this.listLoading = false
+    this.list = data.rows
+    this.total = data.total
+  }
+
+  public doSearch() {
+    this.listQuery.pageNum = 1
+    this.getList()
+  }
+
+  @Watch('listQuery', { immediate: true, deep: true })
+  private changePageNumber() {
+    this.$emit('update:pageParams', this.listQuery)
+  }
+}
 </script>
 
 <style lang="scss" scoped>

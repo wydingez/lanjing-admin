@@ -14,6 +14,16 @@ module.exports = {
     overlay: {
       warnings: false,
       errors: true
+    },
+    proxy: {
+      [process.env.VUE_APP_BASE_API]: {
+        target: 'https://lanjing.ijguo.cn/bucrystal/mgt',
+        changeOrigin: true, // needed for virtual hosted sites
+        ws: true, // proxy websockets
+        pathRewrite: {
+          ['^' + process.env.VUE_APP_BASE_API]: ''
+        }
+      }
     }
   },
   pluginOptions: {

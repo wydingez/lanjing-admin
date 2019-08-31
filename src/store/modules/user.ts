@@ -2,6 +2,7 @@ import { VuexModule, Module, Action, Mutation, getModule } from 'vuex-module-dec
 import { login, logout, getUserInfo } from '@/api/users'
 import { getToken, setToken, removeToken } from '@/utils/cookies'
 import store from '@/store'
+import { Base64 } from 'js-base64'
 
 export interface IUserState {
   token: string
@@ -48,9 +49,9 @@ class User extends VuexModule implements IUserState {
   public async Login(userInfo: { username: string, password: string }) {
     let { username, password } = userInfo
     username = username.trim()
-    const { data } = await login({ username, password })
-    setToken(data.accessToken)
-    this.SET_TOKEN(data.accessToken)
+    const { data } = await login({ username, password: Base64.encode(password) })
+    setToken(data.loginName)
+    this.SET_TOKEN(data.loginName)
   }
 
   @Action
@@ -85,7 +86,7 @@ class User extends VuexModule implements IUserState {
     if (this.token === '') {
       throw Error('LogOut: token is undefined!')
     }
-    await logout()
+    // await logout()
     removeToken()
     this.SET_TOKEN('')
     this.SET_ROLES([])

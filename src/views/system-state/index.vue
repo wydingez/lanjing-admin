@@ -32,7 +32,7 @@
       </el-col>
     </el-row>
 
-    <PlatformBenifit></PlatformBenifit>
+    <PlatformBenifit />
   </div>
 </template>
 

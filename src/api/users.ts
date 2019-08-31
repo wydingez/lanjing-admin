@@ -9,7 +9,7 @@ export const getUserInfo = (data: any) =>
 
 export const login = (data: any) =>
   request({
-    url: '/users/login',
+    url: '/login',
     method: 'post',
     data
   })
