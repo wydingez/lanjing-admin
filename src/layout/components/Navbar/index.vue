@@ -17,7 +17,7 @@
       >
         <div class="avatar-wrapper">
           <img
-            src="https://cdn.vuetifyjs.com/images/john.jpg"
+            :src="require('static/john.jpg')"
             class="user-avatar"
           >
           <i class="el-icon-caret-bottom" />

@@ -39,13 +39,13 @@ service.interceptors.response.use(
         type: 'error',
         duration: 5 * 1000
       })
-      if (res.code === 50008 || res.code === 50012 || res.code === 50014) {
+      if (res.code === '9999') {
         MessageBox.confirm(
-          'You have been logged out, try to login again.',
-          'Log out',
+          '您已登出，请重新登陆',
+          '登出',
           {
-            confirmButtonText: 'Relogin',
-            cancelButtonText: 'Cancel',
+            confirmButtonText: '重新登陆',
+            cancelButtonText: '取消',
             type: 'warning'
           }
         ).then(() => {

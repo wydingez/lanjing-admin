@@ -232,6 +232,7 @@ export default class extends Vue {
   private async approve() {
     await doAuditApprove(this.auditItem.recordNo)
     this.dialog = false
+    this.doSearch()
     this.$message.success('操作成功')
   }
   private async reject() {
@@ -239,6 +240,7 @@ export default class extends Vue {
       recordNo: this.auditItem.recordNo,
       auditDesc: this.auditDesc
     })
+    this.doSearch()
     this.dialog = false
     this.$message.success('操作成功')
   }

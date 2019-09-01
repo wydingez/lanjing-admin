@@ -41,7 +41,8 @@ module.exports = {
     name: defaultSetting.name,
     resolve: {
       alias: {
-        '@': resolve('src')
+        '@': resolve('src'),
+        'static': resolve('public/static')
       }
     }
   },

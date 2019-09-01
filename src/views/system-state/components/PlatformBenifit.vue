@@ -39,14 +39,14 @@
           <el-tag
             type="success"
             effect="dark"
-          >￥ {{ totalProfit }}</el-tag>
+          >￥ {{ periodProfit }}</el-tag>
         </span>
         <span class="filter-tip-right">
           平台累计收益：
           <el-tag
             type="success"
             effect="dark"
-          >￥ {{ periodProfit }}</el-tag>
+          >￥ {{ totalProfit }}</el-tag>
         </span>
       </div>
     </div>

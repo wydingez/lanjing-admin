@@ -111,48 +111,48 @@ export default new Router({
         }
       ]
     },
-    {
-      path: '/user-management',
-      component: Layout,
-      children: [
-        {
-          path: '',
-          component: () => import('@/views/user-management/index.vue'),
-          meta: {
-            title: '用户管理',
-            icon: 'peoples'
-          }
-        }
-      ]
-    },
-    {
-      path: '/system-mass-distribution',
-      component: Layout,
-      children: [
-        {
-          path: '',
-          component: () => import('@/views/system-mass-distribution/index.vue'),
-          meta: {
-            title: '系统群发',
-            icon: 'send-many'
-          }
-        }
-      ]
-    },
-    {
-      path: '/system-setting',
-      component: Layout,
-      children: [
-        {
-          path: '',
-          component: () => import('@/views/system-setting/index.vue'),
-          meta: {
-            title: '系统设置',
-            icon: 'system-setting'
-          }
-        }
-      ]
-    },
+    // {
+    //   path: '/user-management',
+    //   component: Layout,
+    //   children: [
+    //     {
+    //       path: '',
+    //       component: () => import('@/views/user-management/index.vue'),
+    //       meta: {
+    //         title: '用户管理',
+    //         icon: 'peoples'
+    //       }
+    //     }
+    //   ]
+    // },
+    // {
+    //   path: '/system-mass-distribution',
+    //   component: Layout,
+    //   children: [
+    //     {
+    //       path: '',
+    //       component: () => import('@/views/system-mass-distribution/index.vue'),
+    //       meta: {
+    //         title: '系统群发',
+    //         icon: 'send-many'
+    //       }
+    //     }
+    //   ]
+    // },
+    // {
+    //   path: '/system-setting',
+    //   component: Layout,
+    //   children: [
+    //     {
+    //       path: '',
+    //       component: () => import('@/views/system-setting/index.vue'),
+    //       meta: {
+    //         title: '系统设置',
+    //         icon: 'system-setting'
+    //       }
+    //     }
+    //   ]
+    // },
     {
       path: '*',
       redirect: '/404',

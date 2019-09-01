@@ -1,7 +1,18 @@
 <template>
   <div class="app-container presentation-audit">
     <h3>充值审核队列</h3>
-    <span class="tip">(最早申请实名的越靠前， 先审核)</span>
+    <span class="tip">
+      (最早申请实名的越靠前， 先审核)
+      <el-button
+        v-waves
+        class="filter-item"
+        type="primary"
+        icon="el-icon-refresh"
+        @click="doSearch"
+      >
+        刷新
+      </el-button>
+    </span>
     <table-pagination
       ref="tp"
       :ajax="ajax"
@@ -164,7 +175,6 @@ export default class extends Vue {
     status: '',
     rechargeDesc: '',
     auditUser: '',
-    recordNo: '',
     isView: false
   }
 
@@ -179,7 +189,6 @@ export default class extends Vue {
     this.auditItem.isView = !!isView
     this.auditItem.rechargeDate = row.rechargeDate
     this.auditItem.rechargeDesc = row.withdrawDesc
-    this.auditItem.recordNo = row.recordNo
     if (isView) {
       this.auditDesc = row.auditDesc
     }
@@ -226,15 +235,21 @@ export default class extends Vue {
   private async approve() {
     await doAuditRechargeApprove(this.auditItem.streamNo)
     this.dialog = false
+    this.doSearch()
     this.$message.success('操作成功')
   }
   private async reject() {
     await doAuditRechargeReject({
-      recordNo: this.auditItem.recordNo,
+      recordNo: this.auditItem.streamNo,
       auditDesc: this.auditDesc
     })
     this.dialog = false
+    this.doSearch()
     this.$message.success('操作成功')
+  }
+
+  private doSearch() {
+    (this.$refs.tp as TablePagination).doSearch()
   }
 }
 </script>

@@ -1,7 +1,18 @@
 <template>
   <div class="app-container presentation-audit">
     <h3>提现审核队列</h3>
-    <span class="tip">(最早申请实名的越靠前， 先审核)</span>
+    <span class="tip">
+      (最早申请实名的越靠前， 先审核)
+      <el-button
+        v-waves
+        class="filter-item"
+        type="primary"
+        icon="el-icon-refresh"
+        @click="doSearch"
+      >
+        刷新
+      </el-button>
+    </span>
     <table-pagination
       ref="tp"
       :ajax="ajax"
@@ -160,7 +171,6 @@ export default class extends Vue {
     auditUser: '',
     status: '',
     streamNo: '',
-    recordNo: '',
     withdrawAmount: '',
     withdrawDate: '',
     withdrawDesc: '',
@@ -173,7 +183,6 @@ export default class extends Vue {
     this.auditItem.auditUser = row.auditUser
     this.auditItem.status = row.status
     this.auditItem.streamNo = row.streamNo
-    this.auditItem.recordNo = row.recordNo
     this.auditItem.withdrawDate = row.withdrawDate
     this.auditItem.isView = !!isView
     this.auditItem.withdrawAmount = row.withdrawAmount
@@ -224,15 +233,21 @@ export default class extends Vue {
   private async approve() {
     await doAuditWithdrawApprove(this.auditItem.streamNo)
     this.dialog = false
+    this.doSearch()
     this.$message.success('操作成功')
   }
   private async reject() {
     await doAuditWithdrawReject({
-      recordNo: this.auditItem.recordNo,
+      recordNo: this.auditItem.streamNo,
       auditDesc: this.auditDesc
     })
+    this.doSearch()
     this.dialog = false
     this.$message.success('操作成功')
+  }
+
+  private doSearch() {
+    (this.$refs.tp as TablePagination).doSearch()
   }
 }
 </script>
