@@ -28,6 +28,14 @@
         </template>
       </el-table-column>
       <el-table-column
+        label="用户昵称"
+        align="center"
+      >
+        <template slot-scope="scope">
+          <span>{{ scope.row.rechargeUserNickName }}</span>
+        </template>
+      </el-table-column>
+      <el-table-column
         label="充值账号"
         align="center"
       >

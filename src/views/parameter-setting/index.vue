@@ -34,14 +34,14 @@
             </div>
             <el-form-item label="上限">
               <el-input-number
-                v-model="form.amoutMin"
+                v-model="form.amoutMax"
                 :precision="0"
                 :step="1"
               />
             </el-form-item>
             <el-form-item label="下限">
               <el-input-number
-                v-model="form.amoutMax"
+                v-model="form.amoutMin"
                 :precision="0"
                 :step="1"
               />
@@ -68,14 +68,14 @@
             </div>
             <el-form-item label="上限">
               <el-input-number
-                v-model="form.priceMin"
+                v-model="form.priceMax"
                 :precision="2"
                 :step="0.1"
               />
             </el-form-item>
             <el-form-item label="下限">
               <el-input-number
-                v-model="form.priceMax"
+                v-model="form.priceMin"
                 :precision="2"
                 :step="0.1"
               />

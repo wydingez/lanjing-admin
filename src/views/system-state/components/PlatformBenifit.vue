@@ -60,7 +60,7 @@
         align="center"
       >
         <template slot-scope="scope">
-          <span>{{ scope.row.statisticsDate }}</span>
+          <span>{{ scope.row.statisticsDate && scope.row.statisticsDate.slice(0, 10) }}</span>
         </template>
       </el-table-column>
       <el-table-column
