@@ -56,6 +56,20 @@ export default new Router({
       ]
     },
     {
+      path: '/system-article',
+      component: Layout,
+      children: [
+        {
+          path: '',
+          component: () => import('@/views/system-article/index.vue'),
+          meta: {
+            title: '系统文章',
+            icon: 'system-article'
+          }
+        }
+      ]
+    },
+    {
       path: '/parameter-setting',
       component: Layout,
       children: [

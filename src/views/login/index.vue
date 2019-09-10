@@ -24,7 +24,7 @@
           name="username"
           type="text"
           autocomplete="on"
-          placeholder="username"
+          placeholder="用户名"
         />
       </el-form-item>
 
@@ -37,7 +37,7 @@
           ref="password"
           v-model="loginForm.password"
           :type="passwordType"
-          placeholder="password"
+          placeholder="密码"
           name="password"
           autocomplete="on"
           @keyup.enter.native="handleLogin"
@@ -77,14 +77,14 @@ import defaultSetting from '@/setting.json'
 export default class extends Vue {
   private validateUsername = (rule: any, value: string, callback: Function) => {
     if (!isValidUsername(value)) {
-      callback(new Error('Please enter the correct user name'))
+      callback(new Error('请输入正确的用户名！'))
     } else {
       callback()
     }
   }
   private validatePassword = (rule: any, value: string, callback: Function) => {
     if (value.length < 6) {
-      callback(new Error('The password can not be less than 6 digits'))
+      callback(new Error('密码不能小于6位数字'))
     } else {
       callback()
     }
