@@ -36,7 +36,15 @@
         </template>
       </el-table-column>
       <el-table-column
-        label="充值账号"
+        label="真实姓名"
+        align="center"
+      >
+        <template slot-scope="scope">
+          <span>{{ scope.row.rechargeUserRealName }}</span>
+        </template>
+      </el-table-column>
+      <el-table-column
+        label="支付宝账号"
         align="center"
       >
         <template slot-scope="scope">
