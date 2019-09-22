@@ -1,21 +1,22 @@
 <template>
   <div class="system-article-info">
-    <div v-if="!preview">
+    <div v-if="mode !== 'V'">
       <div class="title">
         <el-input
-          v-model="key"
+          v-model="info.key"
+          :disabled="mode === 'U'"
           placeholder="Key"
           class="title-key"
         />
         <el-input
-          v-model="title"
+          v-model="info.title"
           placeholder="文章标题"
           class="title-value"
         />
       </div>
       <tinymce
         v-if="tinymceActive"
-        v-model="tinymceContent"
+        v-model="info.content"
         :height="800"
       />
     </div>
@@ -23,7 +24,7 @@
     <div
       v-else
       class="editor-content"
-      v-html="tinymceContent"
+      v-html="info.content"
     />
   </div>
 </template>
@@ -31,6 +32,13 @@
 <script lang="ts">
 import { Component, Prop, Vue } from 'vue-property-decorator'
 import Tinymce from '@/components/Tinymce/index.vue'
+
+interface InfoType {
+  key: string,
+  title: string,
+  content: string
+}
+
 @Component({
   name: 'TinymceDemo',
   components: {
@@ -38,25 +46,25 @@ import Tinymce from '@/components/Tinymce/index.vue'
   }
 })
 export default class extends Vue {
-  @Prop({ default: false }) private preview!: Boolean
-  @Prop({ default: '' }) private value!: String
+  @Prop({ default: '' }) private mode!: string
+  @Prop({ default: () => {} }) private value!: InfoType
 
   private tinymceActive = true
-  private key = ''
-  private title = ''
 
   deactivated() {
     this.tinymceActive = false
   }
+
   activated() {
     this.tinymceActive = true
   }
 
-  get tinymceContent() {
-    return this.value
+  set info(val: InfoType) {
+    this.$emit('input', val)
   }
-  set tinymceContent(value) {
-    this.$emit('input', value)
+
+  get info() {
+    return this.value
   }
 }
 </script>
