@@ -9,13 +9,13 @@
       v-model="tinymceContent"
       :init="initOptions"
     />
-    <div class="editor-custom-btn-container">
+    <!-- <div class="editor-custom-btn-container">
       <editor-image-upload
         color="primary"
         class="editor-upload-btn"
         @successCBK="imageSuccessCBK"
       />
-    </div>
+    </div> -->
   </div>
 </template>
 

@@ -21,7 +21,7 @@
       <el-table-column
         label="序号"
         align="center"
-        width="120px"
+        width="80px"
       >
         <template slot-scope="scope">
           <span>{{ (pageParams.pageNum - 1 ) * pageParams.pageSize + scope.$index + 1 }}</span>
@@ -33,6 +33,30 @@
       >
         <template slot-scope="scope">
           <span>{{ scope.row.auditUser }}</span>
+        </template>
+      </el-table-column>
+      <el-table-column
+        label="用户昵称"
+        align="center"
+      >
+        <template slot-scope="scope">
+          <span>{{ scope.row.applyUsername }}</span>
+        </template>
+      </el-table-column>
+      <el-table-column
+        label="真实姓名"
+        align="center"
+      >
+        <template slot-scope="scope">
+          <span>{{ scope.row.applyUserRealName }}</span>
+        </template>
+      </el-table-column>
+      <el-table-column
+        label="支付宝账号"
+        align="center"
+      >
+        <template slot-scope="scope">
+          <span>{{ scope.row.bindAcct }}</span>
         </template>
       </el-table-column>
       <el-table-column
@@ -109,8 +133,16 @@
           <span class="content">{{ getStatusDesc(auditItem.status) }}</span>
         </li>
         <li>
-          <span class="label">审核用户：</span>
-          <span class="content">{{ auditItem.auditUser }}</span>
+          <span class="label">用户昵称：</span>
+          <span class="content">{{ auditItem.nickName }}</span>
+        </li>
+        <li>
+          <span class="label">真实姓名：</span>
+          <span class="content">{{ auditItem.realName }}</span>
+        </li>
+        <li>
+          <span class="label">支付宝账号：</span>
+          <span class="content">{{ auditItem.aliPay }}</span>
         </li>
         <li>
           <span class="label">提现金额：</span>
@@ -123,6 +155,10 @@
         <li>
           <span class="label">提现备注：</span>
           <span class="content">{{ auditItem.withdrawDesc }}</span>
+        </li>
+        <li>
+          <span class="label">审核用户：</span>
+          <span class="content">{{ auditItem.auditUser }}</span>
         </li>
         <li>
           <span class="label">审核意见：</span>
@@ -174,6 +210,9 @@ export default class extends Vue {
     withdrawAmount: '',
     withdrawDate: '',
     withdrawDesc: '',
+    nickName: '',
+    realName: '',
+    aliPay: '',
     isView: false
   }
 
@@ -187,6 +226,9 @@ export default class extends Vue {
     this.auditItem.isView = !!isView
     this.auditItem.withdrawAmount = row.withdrawAmount
     this.auditItem.withdrawDesc = row.withdrawDesc
+    this.auditItem.nickName = row.applyUsername
+    this.auditItem.realName = row.applyUserRealName
+    this.auditItem.aliPay = row.bindAcct
     if (isView) {
       this.auditDesc = row.auditDesc
     }
@@ -278,7 +320,7 @@ export default class extends Vue {
     font-size: 16px;
     padding: 5px;
     .label {
-      width: 100px;
+      width: 120px;
       display: inline-block;
     }
     .content img {

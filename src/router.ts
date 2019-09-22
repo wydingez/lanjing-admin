@@ -64,7 +64,7 @@ export default new Router({
           component: () => import('@/views/system-article/index.vue'),
           meta: {
             title: '系统文章',
-            icon: 'system-article'
+            icon: 'article'
           }
         }
       ]

@@ -1,4 +1,5 @@
 /* tslint:disable */
+import './article'
 import './cash-audit'
 import './dashboard'
 import './example'

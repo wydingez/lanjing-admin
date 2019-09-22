@@ -21,7 +21,7 @@
       <el-table-column
         label="序号"
         align="center"
-        width="120px"
+        width="80px"
       >
         <template slot-scope="scope">
           <span>{{ (pageParams.pageNum - 1 ) * pageParams.pageSize + scope.$index + 1 }}</span>
@@ -125,11 +125,19 @@
           <span class="content">{{ getStatusDesc(auditItem.status) }}</span>
         </li>
         <li>
-          <span class="label">审核用户：</span>
-          <span class="content">{{ auditItem.auditUser }}</span>
+          <span class="label">用户昵称：</span>
+          <span class="content">{{ auditItem.nickName }}</span>
         </li>
         <li>
-          <span class="label">提现金额：</span>
+          <span class="label">真实姓名：</span>
+          <span class="content">{{ auditItem.realName }}</span>
+        </li>
+        <li>
+          <span class="label">支付宝账号：</span>
+          <span class="content">{{ auditItem.aliPay }}</span>
+        </li>
+        <li>
+          <span class="label">充值金额：</span>
           <span class="content">￥ {{ auditItem.rechargeAmount }}</span>
         </li>
         <li>
@@ -139,6 +147,10 @@
         <li>
           <span class="label">提现备注：</span>
           <span class="content">{{ auditItem.rechargeDesc }}</span>
+        </li>
+        <li>
+          <span class="label">审核用户：</span>
+          <span class="content">{{ auditItem.auditUser }}</span>
         </li>
         <li>
           <span class="label">审核意见：</span>
@@ -191,6 +203,9 @@ export default class extends Vue {
     status: '',
     rechargeDesc: '',
     auditUser: '',
+    nickName: '',
+    realName: '',
+    aliPay: '',
     isView: false
   }
 
@@ -205,6 +220,9 @@ export default class extends Vue {
     this.auditItem.isView = !!isView
     this.auditItem.rechargeDate = row.rechargeDate
     this.auditItem.rechargeDesc = row.withdrawDesc
+    this.auditItem.nickName = row.rechargeUserNickName
+    this.auditItem.realName = row.rechargeUserRealName
+    this.auditItem.aliPay = row.bindAcct
     if (isView) {
       this.auditDesc = row.auditDesc
     }
@@ -296,7 +314,7 @@ export default class extends Vue {
     font-size: 16px;
     padding: 5px;
     .label {
-      width: 100px;
+      width: 120px;
       display: inline-block;
     }
     .content img {

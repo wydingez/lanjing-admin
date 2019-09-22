@@ -1,9 +1,21 @@
 <template>
   <div class="system-article-info">
     <div v-if="!preview">
+      <div class="title">
+        <el-input
+          v-model="key"
+          placeholder="Key"
+          class="title-key"
+        />
+        <el-input
+          v-model="title"
+          placeholder="文章标题"
+          class="title-value"
+        />
+      </div>
       <tinymce
         v-if="tinymceActive"
-        v-model="content"
+        v-model="tinymceContent"
         :height="800"
       />
     </div>
@@ -11,7 +23,7 @@
     <div
       v-else
       class="editor-content"
-      v-html="content"
+      v-html="tinymceContent"
     />
   </div>
 </template>
@@ -27,27 +39,47 @@ import Tinymce from '@/components/Tinymce/index.vue'
 })
 export default class extends Vue {
   @Prop({ default: false }) private preview!: Boolean
+  @Prop({ default: '' }) private value!: String
 
-  private content =
-    `<h1 style="text-align: center;">Welcome to the TinyMCE demo!</h1><p style="text-align: center; font-size: 15px;"><img title="Logo" src="./favicon.ico" alt="Logo" width="100" height="100" /><ul>
-      <li>Our <a href="//www.tinymce.com/docs/">documentation</a> is a great resource for learning how to configure TinyMCE.</li><li>Have a specific question? Visit the <a href="https://community.tinymce.com/forum/">Community Forum</a>.</li><li>We also offer enterprise grade support as part of <a href="https://tinymce.com/pricing">TinyMCE premium subscriptions</a>.</li>
-    </ul>`
   private tinymceActive = true
+  private key = ''
+  private title = ''
+
   deactivated() {
     this.tinymceActive = false
   }
   activated() {
     this.tinymceActive = true
   }
+
+  get tinymceContent() {
+    return this.value
+  }
+  set tinymceContent(value) {
+    this.$emit('input', value)
+  }
 }
 </script>
 
-<style lang="scss" scoped>
+<style lang="scss">
 .system-article-info {
-  margin: 30px 50px;
+  margin: 0 50px 30px 50px;
   position: relative;
   .editor-content {
     margin-top: 20px;
   }
+  .title {
+    margin-bottom: 10px;
+    .title-key {
+      width: 30%;
+    }
+    .title-value {
+      width: 65%;
+      float: right;
+    }
+  }
+}
+.tox-silver-sink {
+  z-index: 9999 !important;
 }
 </style>
