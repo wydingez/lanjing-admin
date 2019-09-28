@@ -2,12 +2,17 @@
   <div class="system-article-info">
     <div v-if="mode !== 'V'">
       <div class="title">
-        <el-input
-          v-model="info.key"
-          :disabled="mode === 'U'"
-          placeholder="Key"
-          class="title-key"
-        />
+        <el-select 
+          v-model="info.key" 
+          placeholder="请选择文章类型"
+          class="title-key">
+          <el-option
+            v-for="item in options"
+            :key="item.categoryCode"
+            :label="item.categoryName"
+            :value="item.categoryCode">
+          </el-option>
+        </el-select>
         <el-input
           v-model="info.title"
           placeholder="文章标题"
@@ -48,6 +53,7 @@ interface InfoType {
 export default class extends Vue {
   @Prop({ default: '' }) private mode!: string
   @Prop({ default: () => {} }) private value!: InfoType
+  @Prop({ default: () => []}) private options!: Object
 
   private tinymceActive = true
 

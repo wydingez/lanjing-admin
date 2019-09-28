@@ -36,12 +36,12 @@
         </template>
       </el-table-column>
       <el-table-column
-        label="文章Key"
+        label="文章类型"
         align="center"
         width="200px"
       >
         <template slot-scope="scope">
-          <span>{{ scope.row.articleKey }}</span>
+          <span>{{ getCategoryName(scope.row.categoryCode) }}</span>
         </template>
       </el-table-column>
       <el-table-column
@@ -107,6 +107,7 @@
         ref="info"
         v-model="info"
         :mode="mode"
+        :options="options"
       />
       <span
         v-if="mode !== 'V'"
@@ -128,7 +129,7 @@
 import { Vue, Component } from 'vue-property-decorator'
 import TablePagination from '@/components/TablePagination/index.vue'
 import { doAuditApprove, doAuditReject } from '@/api/audit'
-import { addArticle, editArticle, deletArticle, detailArticle } from '@/api/article'
+import { addArticle, editArticle, deletArticle, detailArticle, getArticleTypes } from '@/api/article'
 import Info from './info.vue'
 
 @Component({
@@ -143,6 +144,7 @@ export default class extends Vue {
   private dialog : boolean = false
   private mode : string = ''
   private title : string = ''
+  private options: any[] = []
 
   private info = {
     key: '',
@@ -157,7 +159,10 @@ export default class extends Vue {
         cancelButtonText: '取消',
         type: 'warning'
       }).then(async() => {
-        await deletArticle(row.articleKey)
+        await deletArticle({
+          categoryCode: row.categoryCode,
+          articleTitle: row.articleTitle
+        })
         this.doSearch()
         this.$message.success('删除成功')
       })
@@ -166,11 +171,18 @@ export default class extends Vue {
       this.title = type === 'C' ? '新增文章' : type === 'U' ? '编辑文章' : ''
       this.dialog = true
       if (['U', 'V'].includes(type)) {
-        let res = await detailArticle(row.articleKey)
-        let { articleKey, articleTitle, articleContent } = res.data
-        this.info.key = articleKey
+        let res = await detailArticle({
+          categoryCode: row.categoryCode,
+          articleTitle: row.articleTitle
+        })
+        let { categoryCode, articleTitle, articleContent } = res.data
+        this.info.key = categoryCode
         this.info.title = articleTitle
         this.info.content = articleContent
+      } else {
+        this.info.key = ''
+        this.info.title = ''
+        this.info.content = ''
       }
     }
   }
@@ -220,7 +232,7 @@ export default class extends Vue {
   private async doSave() {
     if (this.mode === 'C') {
       let res = await addArticle({
-        articleKey: this.info.key,
+        categoryCode: this.info.key,
         articleTitle: this.info.title,
         articleContent: this.info.content
       })
@@ -229,7 +241,7 @@ export default class extends Vue {
       this.$message.success('保存成功')
     } else if (this.mode === 'U') {
       let res = await editArticle({
-        articleKey: this.info.key,
+        categoryCode: this.info.key,
         articleTitle: this.info.title,
         articleContent: this.info.content
       })
@@ -237,6 +249,16 @@ export default class extends Vue {
       this.doSearch()
       this.$message.success('编辑成功')
     }
+  }
+
+  private getCategoryName (code: string) {
+    let find = this.options.find(item => item.categoryCode === code)
+    return (find && find.categoryName) || ''
+  }
+
+  async created () {
+    let res = await getArticleTypes()
+    this.options = res.data
   }
 }
 </script>

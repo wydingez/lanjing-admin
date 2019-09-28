@@ -14,14 +14,22 @@ export const editArticle = (data: any) =>
     data
   })
 
-export const deletArticle = (articleKey: string) =>
+export const deletArticle = (data: any) =>
   request({
-    url: `/article/delete/${articleKey}`,
-    method: 'post'
+    url: `/article/delete`,
+    method: 'post',
+    data
   })
 
-export const detailArticle = (articleKey: string) =>
+export const detailArticle = (data: any) =>
   request({
-    url: `/article/query/${articleKey}`,
+    url: `/article/query`,
+    method: 'post',
+    data
+  })
+
+export const getArticleTypes = () =>
+  request({
+    url: '/article/query/category',
     method: 'get'
   })
