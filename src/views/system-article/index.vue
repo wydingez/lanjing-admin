@@ -251,12 +251,12 @@ export default class extends Vue {
     }
   }
 
-  private getCategoryName (code: string) {
+  private getCategoryName(code: string) {
     let find = this.options.find(item => item.categoryCode === code)
     return (find && find.categoryName) || ''
   }
 
-  async created () {
+  async created() {
     let res = await getArticleTypes()
     this.options = res.data
   }
