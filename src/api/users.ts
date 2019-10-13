@@ -7,6 +7,12 @@ export const getUserInfo = (data: any) =>
     data
   })
 
+export const getLoginCode = () => 
+  request({
+    url: '/mail/login-code/admin',
+    method: 'get'
+  })
+
 export const login = (data: any) =>
   request({
     url: '/login',

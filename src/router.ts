@@ -98,6 +98,20 @@ export default new Router({
       ]
     },
     {
+      path: '/user-management',
+      component: Layout,
+      children: [
+        {
+          path: '',
+          component: () => import('@/views/user-management/index.vue'),
+          meta: {
+            title: '用户管理',
+            icon: 'peoples'
+          }
+        }
+      ]
+    },
+    {
       path: '/presentation-audit',
       component: Layout,
       children: [
@@ -125,20 +139,6 @@ export default new Router({
         }
       ]
     },
-    // {
-    //   path: '/user-management',
-    //   component: Layout,
-    //   children: [
-    //     {
-    //       path: '',
-    //       component: () => import('@/views/user-management/index.vue'),
-    //       meta: {
-    //         title: '用户管理',
-    //         icon: 'peoples'
-    //       }
-    //     }
-    //   ]
-    // },
     // {
     //   path: '/system-mass-distribution',
     //   component: Layout,

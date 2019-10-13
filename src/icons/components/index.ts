@@ -2,6 +2,7 @@
 import './article'
 import './cash-audit'
 import './dashboard'
+import './email'
 import './example'
 import './eye-off'
 import './eye-on'

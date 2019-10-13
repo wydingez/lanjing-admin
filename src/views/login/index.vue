@@ -50,6 +50,31 @@
         </span>
       </el-form-item>
 
+      <el-form-item prop="code" class="email">
+        <span class="svg-container">
+          <svg-icon name="email" />
+        </span>
+        <el-input
+          placeholder="邮箱验证码"
+          type="text"
+          v-model="loginForm.code"
+          name="code"
+        >
+        </el-input>
+      </el-form-item>
+
+      <div class="code-button">
+        <el-button
+          :disabled="count > 0"
+          :loading="getCodeLoading"
+          type="primary"
+          @click="doGetLoginCode"
+        >
+          {{count > 0 ? `${count}秒后重新获取` : '点击获取'}}
+        </el-button>
+      </div>
+      
+
       <el-button
         :loading="loading"
         type="primary"
@@ -70,6 +95,7 @@ import { Form as ElForm, Input } from 'element-ui'
 import { UserModule } from '@/store/modules/user'
 import { isValidUsername } from '@/utils/validate'
 import defaultSetting from '@/setting.json'
+import { getLoginCode } from '@/api/users'
 
 @Component({
   name: 'Login'
@@ -89,14 +115,26 @@ export default class extends Vue {
       callback()
     }
   }
+  private validateCode = (rule: any, value: string, callback: Function) => {
+    if (!value) {
+      callback(new Error('邮箱验证码不能为空'))
+    } else {
+      callback()
+    }
+  }
   private loginForm = {
     username: '',
-    password: ''
+    password: '',
+    code: ''
   }
   private loginRules = {
     username: [{ validator: this.validateUsername, trigger: 'blur' }],
-    password: [{ validator: this.validatePassword, trigger: 'blur' }]
+    password: [{ validator: this.validatePassword, trigger: 'blur' }],
+    code: [{ validator: this.validateCode, trigger: 'blur' }],
   }
+  private getCodeLoading = false
+  private count = 0
+  private interval : NodeJS.Timer | null = null
   private passwordType = 'password'
   private loading = false
   private showDialog = false
@@ -140,7 +178,6 @@ export default class extends Vue {
         this.loading = true
         try {
           await UserModule.Login(this.loginForm)
-          console.log(this.redirect)
           this.$router.push({
             path: this.redirect || '/',
             query: this.otherQuery
@@ -162,6 +199,24 @@ export default class extends Vue {
       }
       return acc
     }, {} as Dictionary<string>)
+  }
+
+  private async doGetLoginCode() {
+    this.getCodeLoading = true
+    try {
+      let res = await getLoginCode()
+      this.$message.success('验证码发送成功')
+      this.count = 60
+      this.getCodeLoading = false
+      this.interval = setInterval(() => {
+        this.count--
+        if (this.count === 0) {
+          clearInterval(Number(this.interval))
+        }
+      }, 1000)
+    } catch (e) {
+      this.getCodeLoading = false
+    }
   }
 }
 </script>
@@ -221,6 +276,16 @@ export default class extends Vue {
     padding: 160px 35px 0;
     margin: 0 auto;
     overflow: hidden;
+
+    .email {
+      width: 60%;
+      display: inline-block;
+    }
+    .code-button {
+      display: inline-block;
+      width: 40%;
+      text-align: right;
+    }
   }
 
   .tips {
