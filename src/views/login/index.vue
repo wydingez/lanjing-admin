@@ -28,7 +28,9 @@
         />
       </el-form-item>
 
-      <el-form-item prop="password">
+      <el-form-item
+        prop="password"
+      >
         <span class="svg-container">
           <svg-icon name="password" />
         </span>
@@ -50,17 +52,19 @@
         </span>
       </el-form-item>
 
-      <el-form-item prop="code" class="email">
+      <el-form-item
+        prop="code"
+        class="email"
+      >
         <span class="svg-container">
           <svg-icon name="email" />
         </span>
         <el-input
+          v-model="loginForm.code"
           placeholder="邮箱验证码"
           type="text"
-          v-model="loginForm.code"
           name="code"
-        >
-        </el-input>
+        />
       </el-form-item>
 
       <div class="code-button">
@@ -70,10 +74,9 @@
           type="primary"
           @click="doGetLoginCode"
         >
-          {{count > 0 ? `${count}秒后重新获取` : '点击获取'}}
+          {{ count > 0 ? `${count}秒后重新获取` : '点击获取' }}
         </el-button>
       </div>
-      
 
       <el-button
         :loading="loading"
@@ -130,7 +133,7 @@ export default class extends Vue {
   private loginRules = {
     username: [{ validator: this.validateUsername, trigger: 'blur' }],
     password: [{ validator: this.validatePassword, trigger: 'blur' }],
-    code: [{ validator: this.validateCode, trigger: 'blur' }],
+    code: [{ validator: this.validateCode, trigger: 'blur' }]
   }
   private getCodeLoading = false
   private count = 0

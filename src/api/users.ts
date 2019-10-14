@@ -7,7 +7,7 @@ export const getUserInfo = (data: any) =>
     data
   })
 
-export const getLoginCode = () => 
+export const getLoginCode = () =>
   request({
     url: '/mail/login-code/admin',
     method: 'get'

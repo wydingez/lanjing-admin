@@ -82,78 +82,78 @@
 </template>
 
 <script lang="ts">
-  import { Vue, Component, Prop } from 'vue-property-decorator'
-  import TablePagination from '@/components/TablePagination/index.vue'
-  import { parseTime } from '@/utils/index'
+import { Vue, Component, Prop } from 'vue-property-decorator'
+import TablePagination from '@/components/TablePagination/index.vue'
+import { parseTime } from '@/utils/index'
 
-  function getLastMonth() {
-    const end = new Date()
-    const start = new Date()
-    start.setTime(start.getTime() - 3600 * 1000 * 24 * 30)
-    return [start, end]
+function getLastMonth() {
+  const end = new Date()
+  const start = new Date()
+  start.setTime(start.getTime() - 3600 * 1000 * 24 * 30)
+  return [start, end]
+}
+
+@Component({
+  name: 'account-log',
+  components: {
+    TablePagination
+  }
+})
+export default class extends Vue {
+  @Prop({ required: true }) private userId!: number
+
+  private pageParams = {}
+  private rangeDate: any[] = getLastMonth()
+  private rangeDateOptions = {
+    shortcuts: [{
+      text: '最近一周',
+      onClick(picker:Vue) {
+        const end = new Date()
+        const start = new Date()
+        start.setTime(start.getTime() - 3600 * 1000 * 24 * 7)
+        picker.$emit('pick', [start, end])
+      }
+    }, {
+      text: '最近一个月',
+      onClick(picker:Vue) {
+        const end = new Date()
+        const start = new Date()
+        start.setTime(start.getTime() - 3600 * 1000 * 24 * 30)
+        picker.$emit('pick', [start, end])
+      }
+    }, {
+      text: '最近三个月',
+      onClick(picker:Vue) {
+        const end = new Date()
+        const start = new Date()
+        start.setTime(start.getTime() - 3600 * 1000 * 24 * 90)
+        picker.$emit('pick', [start, end])
+      }
+    }]
   }
 
-  @Component({
-    name: 'account-log',
-    components: {
-      TablePagination
-    }
-  })
-  export default class extends Vue {
-    @Prop({ required: true }) private userId!: number
-
-    private pageParams = {}
-    private rangeDate: any[] = getLastMonth()
-    private rangeDateOptions = {
-      shortcuts: [{
-        text: '最近一周',
-        onClick(picker:Vue) {
-          const end = new Date()
-          const start = new Date()
-          start.setTime(start.getTime() - 3600 * 1000 * 24 * 7)
-          picker.$emit('pick', [start, end])
-        }
-      }, {
-        text: '最近一个月',
-        onClick(picker:Vue) {
-          const end = new Date()
-          const start = new Date()
-          start.setTime(start.getTime() - 3600 * 1000 * 24 * 30)
-          picker.$emit('pick', [start, end])
-        }
-      }, {
-        text: '最近三个月',
-        onClick(picker:Vue) {
-          const end = new Date()
-          const start = new Date()
-          start.setTime(start.getTime() - 3600 * 1000 * 24 * 90)
-          picker.$emit('pick', [start, end])
-        }
-      }]
-    }
-
-    private get ajax() {
-      return {
-        url: '/membership/fund-list',
-        params: {
-          userId: this.userId,
-          startDate: parseTime(this.rangeDate[0]),
-          endDate: parseTime(this.rangeDate[1])
-        }
+  private get ajax() {
+    return {
+      url: '/membership/fund-list',
+      params: {
+        userId: this.userId,
+        startDate: parseTime(this.rangeDate[0]),
+        endDate: parseTime(this.rangeDate[1])
       }
     }
-
-    private doSearch() {
-      (this.$refs.tp as TablePagination).doSearch()
-    }
-
-    private doClear() {
-      this.rangeDate = []
-      this.$nextTick(() => {
-        this.doSearch()
-      })
-    }
   }
+
+  private doSearch() {
+    (this.$refs.tp as TablePagination).doSearch()
+  }
+
+  private doClear() {
+    this.rangeDate = []
+    this.$nextTick(() => {
+      this.doSearch()
+    })
+  }
+}
 </script>
 
 <style lang="scss" scoped>
